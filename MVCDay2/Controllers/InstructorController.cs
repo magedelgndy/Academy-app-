@@ -9,6 +9,7 @@ namespace MVCDay2.Controllers
         ITIEntity context = new ITIEntity();
         public IActionResult Instructor()
         {
+            
            List<Instructor> instructorsmodel = context.Instructors.ToList();
             return View(instructorsmodel);
         }
