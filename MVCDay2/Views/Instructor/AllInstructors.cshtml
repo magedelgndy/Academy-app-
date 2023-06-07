@@ -1,0 +1,46 @@
+﻿@model List<Instructor>;
+@{
+    ViewData["Title"] = "Instructor";
+}
+<h1>All Instructors </h1>
+<br />
+<a class="btn btn-success" href="/Instructor/New">Add New Instructor</a>
+<br />
+<br />
+<table class="table">
+    <thead>
+        <form class="search-form" action="/Instructor/search" method="post">
+            <div class="input-group">
+                <input type="text" class="form-control" name="name"  placeholder="Search..." required>
+                <div class="input-group-append">
+                    <button class="btn btn-primary" type="submit">Search</button>
+                </div>
+            </div>
+        </form>
+
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Name</th>
+            <th scope="col">Address</th>
+            <th scope="col">Salary</th>
+            <th scope="col">Image</th>
+            <th scope="col">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <th scope="row">@item.Id</th>
+                <td>@item.Name</td>
+                <td>@item.Address</td>
+                <td>@item.Salary</td>
+                <td><img src="/images/@item.Img" height="80px" width="80px" /></td>
+                <td><a class="btn btn-success" href="/Instructor/MyInstructor/@item.Id">Details</a>
+                    <a class="btn btn-warning" href="/Instructor/Update/@item.Id">Update</a>
+                    <a class="btn btn-danger" href="/Instructor/delete/@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
