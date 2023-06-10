@@ -9,7 +9,13 @@ namespace MVCDay2.Controllers
     public class TraineeController : Controller
     {
         ITIEntity context = new ITIEntity();
-        
+        public IActionResult AllTrainee()
+        {
+            List<Trainee> trainees = new List<Trainee>();   
+           trainees = context.Trainees.ToList();
+            return  View(trainees);
+
+        }
         public IActionResult ShowDegree(int tId,int cId)
         {
             Course course = context.Courses.Where(c => c.Id == cId).FirstOrDefault();
@@ -57,7 +63,6 @@ namespace MVCDay2.Controllers
         } 
         public IActionResult ShowTraineeResult(int tId)
         {
-            Course course = context.Courses.FirstOrDefault();
             List<TraineeCourseViewModel> TraineeCRVM = context.CourseResults
                                                                 .Where(n => n.TraineeId == tId)
                                                                 .Include(cr => cr.Trainee)
@@ -67,10 +72,9 @@ namespace MVCDay2.Controllers
                 TName=cr.Trainee.Name,
                 CName=cr.Course.Name,
                 Degree= (int)cr.Degree,
-                Min_degree= (int)course.Min_degree
+                Min_degree= (int)cr.Course.Min_degree
               
     }).ToList();
-            
             foreach (var item in TraineeCRVM)
             {
                 if (item.Degree > item.Min_degree)

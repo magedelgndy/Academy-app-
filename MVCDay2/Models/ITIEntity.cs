@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using MVCDay2.Models;
+using MVCDay2.ViewModel;
 
 namespace MVCDay2.Models
 {
@@ -17,12 +18,13 @@ namespace MVCDay2.Models
             base.OnConfiguring(optionsBuilder);
         }
 
-
+        public DbSet<Account> Accounts { get; set; }
         public DbSet<Department> Departments { get; set; }
         public DbSet<Instructor> Instructors { get; set; }
         public DbSet<Course> Courses { get; set; }
         public DbSet<CrsResult> CourseResults { get; set; }
         public DbSet<Trainee> Trainees  { get; set; }
+        public DbSet<MVCDay2.ViewModel.TraineeCourseViewModel>? TraineeCourseViewModel { get; set; }
 
     }
 }

@@ -1,24 +1,44 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model IEnumerable<MVCDay2.ViewModel.TraineeCourseViewModel>
+
 @{
+    ViewData["Title"] = "ShowTraineeResult";
 }
-@model List< MVCDay2.ViewModel.TraineeCourseViewModel >
-<h1>show all courses that  </h1>
-@foreach (var item in Model)
-{
-    <div class="card" style="color:@item.color; width: 18rem;">
 
-        <div class="card-body">
-            <h5 class="card-title">@item.CName</h5>
+<h1>ShowTraineeResult</h1>
 
-            <p class="card-text">@item.Degree</p>
-
-
-
-        </div>
-        <hr>
-
-
-    </div>
-}
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.TName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Degree)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Min_degree)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr style="color:@item.color">
+                <td style ="color:@item.color">
+                @Html.DisplayFor(modelItem => item.TName)
+            </td>
+                <td style="color:@item.color">
+                @Html.DisplayFor(modelItem => item.CName)
+            </td style="color:@item.color">
+            <td style="color:@item.color">
+                @Html.DisplayFor(modelItem => item.Degree)
+            </td style="color:@item.color">
+            <td>
+                @Html.DisplayFor(modelItem => item.Min_degree)
+            </td style="color:@item.color">
+        </tr>
+}<a asp-action="AllTrainee" asp-controller="Trainee"  class="btn btn-success">All Trainees</a>
+    </tbody>
+</table>

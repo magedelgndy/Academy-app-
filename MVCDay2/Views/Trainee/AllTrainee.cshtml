@@ -1,0 +1,49 @@
+﻿@model IEnumerable<MVCDay2.Models.Trainee>
+
+@{
+    Layout = "_AdvancedLayout";
+    ViewData["Title"] = "AllTrainee";
+}
+
+<h1>AllTrainee</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Img)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Address)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Grade)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+               <img src="/images/@item.Img" height="80px" width="80px" />
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Address)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Grade)
+            </td>
+            <td>
+                    <a asp-action="ShowTraineeResult" class="btn btn-warning" asp-controller="Trainee" asp-route-tId="@item.Id">Details</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

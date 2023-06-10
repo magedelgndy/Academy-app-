@@ -1,42 +1,78 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model MVCDay2.Models.Instructor
+
 @{
+    ViewData["Title"] = "New";
+    SelectList deptitems = new SelectList(ViewBag.DeptList,"Id","Name");
+    SelectList courseitems = new SelectList(ViewBag.CourseList, "Id", "Name");
 }
-@model MVCDay2.ViewModel.Instructor_data
-@using (Html.BeginForm("Add_Data", "Show", FormMethod.Post, new { enctype = "multipart/form-data" }))
-{
 
+<h1>New</h1>
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.Ins.Name)
-        @Html.TextBoxFor(model => model.Ins.Name, new { @class = "form-control", required = "required" })
+<h4>Instructor</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post" asp-action="New" enctype="multipart/form-data">
+            <div asp-validation-summary="All" class="text-danger">
+                <!--ALL : Error Model Or not-->
+            </div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label" ></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <br />
+
+            <div class="form-group">
+                <label asp-for="Salary" class="control-label"></label>
+                <input asp-for="Salary" class="form-control" />
+                <span asp-validation-for="Salary" class="text-danger"></span>
+            </div>
+            <br />
+
+            <div class="form-group">
+                <label asp-for="Img" class="control-label"></label>
+                <input asp-for="Img" type="file" name="imageFile" class="form-control" accept="images/*" />
+                @*<input type="file" name="imageFile" accept="images/*" required />*@
+            </div>
+            <br />
+
+            <div class="form-group">
+                <label asp-for="Address" class="control-label"></label>
+                <input asp-for="Address" class="form-control" />
+                <span asp-validation-for="Address" class="text-danger"></span>
+            </div>
+            <br />
+
+            <div class="form-group">
+                <label asp-for="Dept_id" class="control-label"></label>
+                <select asp-for="Dept_id" class="form-control" asp-items="deptitems">
+                    <option value="0">--select Department--</option>
+                </select>
+                <span asp-validation-for="Dept_id" class="text-danger"></span>
+            </div>
+            <br />
+
+            <div class="form-group">
+                <label asp-for="Crs_id" class="control-label"></label>
+                <select asp-for="Crs_id" class="form-control" asp-items="courseitems">
+                    <option value="0">--select Course--</option>
+                </select>
+                <span asp-validation-for="Crs_id" class="text-danger"></span>
+            </div>
+            <br />
+            <div class="form-group">
+                <input type="submit" value="New" class="btn btn-primary" />
+            </div>
+        </form>
     </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.Ins.Img)
-        <input type="file" name="imageFile" accept="images/*" required />
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.Ins.Salary)
-        @Html.TextBoxFor(model => model.Ins.Salary, new { @class = "form-control", required = "required" })
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.Ins.Address)
-        @Html.TextAreaFor(model => model.Ins.Address, new { @class = "form-control", required = "required" })
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.course)
-        @Html.DropDownListFor(model => model.Ins.Crs_id,new SelectList(Model.course, "Id", "Name"), "Select a department", new { @class = "form-control" })
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.Ins.Department)
-        @Html.DropDownListFor(model => model.Ins.Dept_id,new SelectList(Model.Dept, "Id", "Name"), "Select a department", new { @class = "form-control" })
-    </div>
-
-    <button type="submit" class="btn btn-primary">Save</button>
-}
+</div>
+<br />
+<div>
+    <a asp-action="AllInstructors" asp-controller="Instructor" class="btn btn-secondary">Back to List</a>
+</div>
+@section Scripts{
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+};

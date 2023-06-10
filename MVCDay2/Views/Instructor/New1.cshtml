@@ -1,0 +1,61 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    SelectList deptitems = new SelectList(ViewBag.DeptList, "Id", "Name");
+    SelectList courseitems = new SelectList(ViewBag.CourseList, "Id", "Name");
+
+}
+@model MVCDay2.Models.Instructor
+@using (Html.BeginForm("New", "Instructor", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <div asp-validation-summary="All" class="text-danger">
+        
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Name" class="control-label"></label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Img" class="control-label"></label>
+        <input type="file" name="imageFile" accept="images/*" required />
+        <span asp-validation-for="Img" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Salary" class="control-label"></label>
+        <input asp-for="Salary" class="form-control" />
+        <span asp-validation-for="Salary" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Address" class="control-label"></label>
+        <input asp-for="Address" class="form-control" />
+        <span asp-validation-for="Address" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Dept_id" class="control-label"></label>
+        <select asp-for="Dept_id" class="form-control" asp-items="deptitems">
+            <option value="0">--select Department--</option>
+        </select>
+        <span asp-validation-for="Dept_id" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Crs_id" class="control-label"></label>
+        <select asp-for="Crs_id" class="form-control" asp-items="courseitems">
+            <option value="0">--select Course--</option>
+        </select>
+        <span asp-validation-for="Crs_id" class="text-danger"></span>
+    </div>
+
+    <br />
+    <button type="submit" class="btn btn-primary">Save</button>
+
+    <br />
+    <a asp-action="AllInstructors" class="btn btn-success">Back to List</a>
+}

@@ -4,6 +4,7 @@ using MVCDay2.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MVCDay2.Migrations
 {
     [DbContext(typeof(ITIEntity))]
-    partial class ITIEntityModelSnapshot : ModelSnapshot
+    [Migration("20230607132617_v8")]
+    partial class v8
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,27 +24,6 @@ namespace MVCDay2.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("MVCDay2.Models.Account", b =>
-                {
-                    b.Property<int>("id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("id");
-
-                    b.ToTable("Accounts");
-                });
 
             modelBuilder.Entity("MVCDay2.Models.Course", b =>
                 {
@@ -51,19 +33,18 @@ namespace MVCDay2.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("Degree")
+                    b.Property<int>("Degree")
                         .HasColumnType("int");
 
                     b.Property<int?>("Dept_id")
                         .HasColumnType("int");
 
-                    b.Property<int?>("Min_degree")
+                    b.Property<int>("Min_degree")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -107,9 +88,11 @@ namespace MVCDay2.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Manager")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -128,10 +111,10 @@ namespace MVCDay2.Migrations
                     b.Property<string>("Address")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Crs_id")
+                    b.Property<int?>("Crs_id")
                         .HasColumnType("int");
 
-                    b.Property<int>("Dept_id")
+                    b.Property<int?>("Dept_id")
                         .HasColumnType("int");
 
                     b.Property<string>("Img")
@@ -139,8 +122,7 @@ namespace MVCDay2.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Salary")
                         .HasColumnType("int");
@@ -217,15 +199,11 @@ namespace MVCDay2.Migrations
                 {
                     b.HasOne("MVCDay2.Models.Course", "Course")
                         .WithMany()
-                        .HasForeignKey("Crs_id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("Crs_id");
 
                     b.HasOne("MVCDay2.Models.Department", "Department")
                         .WithMany("Instructors")
-                        .HasForeignKey("Dept_id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("Dept_id");
 
                     b.Navigation("Course");
 

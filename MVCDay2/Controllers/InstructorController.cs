@@ -19,7 +19,18 @@ namespace MVCDay2.Controllers
         {
             _webHostEnvironment = webHostEnvironment;
         }
+
+
         ITIEntity context = new ITIEntity();
+        public IActionResult Salary (int Salary)
+        {
+            if (Salary>5000)
+            {
+                return Json(true);
+            }
+                return Json(false);
+
+        }
         public IActionResult AllInstructors()
         {
             
@@ -35,27 +46,23 @@ namespace MVCDay2.Controllers
 
         public IActionResult New()
         {
-            List<Course> c1 = context.Courses.ToList();
-            List<Department> d1 = context.Departments.ToList();
-            Instructor_data data = new Instructor_data()
-            {
-                course = c1,
-                Dept = d1,
+            ViewData["DeptList"] = context.Departments.ToList();
+            ViewData["CourseList"] = context.Courses.ToList();
 
-            };
-
-            return View(data);
+            return View();
         }
+
         [HttpPost]
-        public IActionResult Save(Instructor ins,IFormFile imageFile)
+        [ValidateAntiForgeryToken]
+        public IActionResult New(Instructor ins,IFormFile imageFile)
         {
             
-            if (imageFile != null && imageFile.Length > 0)
+            if (imageFile != null )
             {
                 string fileName = Path.GetFileName(imageFile.FileName);
 
                 // Specify the path where the image will be saved
-                string imagePath = Path.Combine(_webHostEnvironment.WebRootPath, "image", fileName);
+                string imagePath = Path.Combine(_webHostEnvironment.WebRootPath, "images", fileName);
 
                 // Save the image file to the specified path
                 using (var stream = new FileStream(imagePath, FileMode.Create))
@@ -66,21 +73,21 @@ namespace MVCDay2.Controllers
                 // Set the Image property of the Instructor object
                 ins.Img = fileName;
             }
-            if (ins.Name==null)
+            if (ModelState.IsValid==true)
             {
-                List<Course> c1 = context.Courses.ToList();
-                List<Department> d1 = context.Departments.ToList();
-                Instructor_data data = new Instructor_data()
+                try{
+                context.Instructors.Add(ins);
+                context.SaveChanges();
+                return RedirectToAction(nameof(AllInstructors));
+                }
+                catch(Exception ex)
                 {
-                    course = c1,
-                    Dept = d1,
-
-                };
-                return View(New);
+                    ModelState.AddModelError("Dept_Id","please select department");
+                }
             }
-            context.Instructors.Add(ins);
-            context.SaveChanges();
-            return RedirectToAction(nameof(AllInstructors));
+            ViewData["DeptList"] = context.Departments.ToList();
+            ViewData["CourseList"] = context.Courses.ToList();
+            return View(ins);
         }
 
         public IActionResult Update(int id)
@@ -176,10 +183,14 @@ namespace MVCDay2.Controllers
         {
             if (name != null )
             {
-              var display = context.Instructors.FirstOrDefault(n => n.Name == name);
-                if(display != null)
+                List<Instructor> instructor = new List<Instructor>
                 {
-                    return View("AllInstructors",display);
+                    context.Instructors.FirstOrDefault(n => n.Name == name)
+                };
+                var dis = context.Instructors.Where(n=>n.Name == name).ToList();
+                if (dis != null)
+                {
+                    return View("AllInstructors",dis);
                 }else{
                   List<Instructor> instructorsmodel = context.Instructors.ToList();
                     return View("AllInstructors",instructorsmodel);
